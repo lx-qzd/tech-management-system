@@ -3,14 +3,43 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import type { TechTask } from '../interfaces/Task';
+import { Button } from 'primereact/button';
+import { confirmDialog } from 'primereact/confirmdialog';
 // import { MOCK_TASKS } from '../data/tasks';
 
 interface TaskTableProps {
   tasks: TechTask[];
+  onDeleteTask: (id: string) => void;
 }
 
-export const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
+export const TaskTable: React.FC<TaskTableProps> = ({ tasks, onDeleteTask }) => {
     
+    // Action Template for the Delete Button
+    const confirmDelete = (task: TechTask) => {
+        confirmDialog({
+            message: 'Are you sure you want to delete this ticket?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: () => onDeleteTask(task.id)
+        });
+    };
+    const actionBodyTemplate = (task: TechTask) => {
+        return (
+            <Button 
+                icon="pi pi-trash" 
+                rounded 
+                outlined 
+                severity="danger" 
+                onClick={() => confirmDelete(task)} 
+                tooltip="Delete Ticket"
+                tooltipOptions={{ position: 'bottom' }}
+            />
+        );
+    };
+
     // Status Badge Template
     const statusBodyTemplate = (task: TechTask) => {
         const severity = task.status === 'Completed' ? 'success' : task.status === 'In Progress' ? 'info' : 'warning';
@@ -32,6 +61,7 @@ export const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
                 <Column header="Status" body={statusBodyTemplate} sortable></Column>
                 <Column header="Priority" body={priorityBodyTemplate} sortable></Column>
                 <Column field="createdAt" header="Date Created" body={(rowData) => rowData.createdAt.toLocaleDateString()} sortable></Column>
+                <Column header="Actions" body={actionBodyTemplate}></Column>
             </DataTable>
         </div>
     );

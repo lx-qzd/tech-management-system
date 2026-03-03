@@ -14,6 +14,12 @@ function App() {
     setIsDialogVisible(false);
   };
 
+  const deleteTask = (taskId: string) => {
+    // We create a new array excluding the task with the matching ID
+    const updatedTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(updatedTasks);
+};
+
   return (
     <MainLayout>
       <div className="flex justify-content-between align-items-center mb-4">
@@ -26,7 +32,7 @@ function App() {
         />
       </div>
 
-      <TaskTable tasks={tasks} />
+      <TaskTable tasks={tasks} onDeleteTask={deleteTask} />
 
       <TaskDialog 
         visible={isDialogVisible} 
