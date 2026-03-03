@@ -71,7 +71,12 @@ export const TaskTable: React.FC<TaskTableProps> = ({ tasks, onDeleteTask, onUpd
         <div className="card shadow-2 border-round surface-card p-4">
             <ConfirmDialog />
             <h3 className="m-0 mb-4 text-blue-700">System Technical Tickets</h3>
-            <DataTable value={tasks} paginator rows={5} tableStyle={{ minWidth: '50rem' }}>
+            <DataTable 
+                value={tasks} 
+                emptyMessage="No tickets found. Relax, the servers are healthy!"
+                paginator 
+                rows={5} 
+                tableStyle={{ minWidth: '50rem' }}>
                 <Column field="id" header="ID" sortable></Column>
                 <Column field="title" header="Task Title" sortable></Column>
                 <Column header="Status" body={statusBodyTemplate} sortable></Column>
