@@ -3,9 +3,13 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import type { TechTask } from '../interfaces/Task';
-import { MOCK_TASKS } from '../data/tasks';
+// import { MOCK_TASKS } from '../data/tasks';
 
-export const TaskTable: React.FC = () => {
+interface TaskTableProps {
+  tasks: TechTask[];
+}
+
+export const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
     
     // Status Badge Template
     const statusBodyTemplate = (task: TechTask) => {
@@ -22,7 +26,7 @@ export const TaskTable: React.FC = () => {
     return (
         <div className="card shadow-2 border-round surface-card p-4">
             <h3 className="m-0 mb-4 text-blue-700">System Technical Tickets</h3>
-            <DataTable value={MOCK_TASKS} paginator rows={5} tableStyle={{ minWidth: '50rem' }}>
+            <DataTable value={tasks} paginator rows={5} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="id" header="ID" sortable></Column>
                 <Column field="title" header="Task Title" sortable></Column>
                 <Column header="Status" body={statusBodyTemplate} sortable></Column>
